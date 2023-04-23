@@ -7,9 +7,13 @@
 
 import UIKit
 
+protocol PlayerCellDelegate: AnyObject {
+    func didTapFavoriteButton(for cell: PlayerCell)
+}
+
 class PlayersListViewController: UIViewController {
     
-    private var players: [Player] = []
+    private var players: [Response] = []
     
     
     
@@ -18,18 +22,21 @@ class PlayersListViewController: UIViewController {
         self.setupUI()
         self.tableView.dataSource = self
         self.tableView.delegate = self
-        APIManager.shared.getTopScorers { [weak self] (players, error) in
-                    if let error = error {
-                        print(error)
-                    } else if let players = players {
-                        self?.players = players
-                        self?.tableView.reloadData()
-                    }
+        APIManager.shared.getTopScorers { result in
+            switch result {
+            case .success(let playerData):
+                self.players = playerData.response
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
         title = "Top Scorers"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
- 
+    
     private var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(PlayerCell.self, forCellReuseIdentifier: PlayerCell.identifier)
@@ -67,11 +74,9 @@ extension PlayersListViewController: UITableViewDataSource{
         guard let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.identifier, for: indexPath) as? PlayerCell else {
             fatalError("TableView couldn't dequeue a PlayerCell")
         }
-        
+        cell.delegate = self
         let player = players[indexPath.row]
-        cell.player = player
-        cell.configure(player: player)
-        
+        cell.topScorer = player
         return cell
     }
 }
@@ -81,8 +86,22 @@ extension PlayersListViewController: UITableViewDelegate{
         tableView.deselectRow(at: indexPath, animated: true)
         let player = players[indexPath.row]
         let detailVC = DetailViewController()
-        detailVC.player = player
+        detailVC.topScorer = player
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
 }
-
+//MARK: - Save to favorite players Delegate
+extension PlayersListViewController: PlayerCellDelegate{
+    func didTapFavoriteButton(for cell: PlayerCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let favoriteVC = FavoritePlayersViewController()
+        favoriteVC.delegate = self
+        let player = players[indexPath.row]
+        if  cell.isFavorite{
+            favoriteVC.favoritePlayers.append(player)
+        } else {
+            favoriteVC.favoritePlayers.removeAll(where: { $0 == player})
+        }
+        navigationController?.pushViewController(favoriteVC, animated: true)
+    }
+}

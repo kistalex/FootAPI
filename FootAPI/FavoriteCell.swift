@@ -9,17 +9,27 @@ import UIKit
 
 class FavoriteCell: UITableViewCell {
 
+    var favoritePlayer: Response? {
+        didSet{
+            configureCell()
+        }
+    }
     
-    var player: Player?
-    
-    
+    func configureCell(){
+        guard let favoritePlayer = favoritePlayer else { return }
+        circleImageView.loadFrom(URLAddress: favoritePlayer.player.photo)
+        nameLabel.text = favoritePlayer.player.name
+        ageLabel.text = "Player age \(favoritePlayer.player.age)"
+        scoreLabel.text = "Player score \(favoritePlayer.statistics[0].goals.total)"
+    }
+
     static let identifier = "Favorite Cell"
     
     private enum UIConstants{
         static let imageSize: CGFloat = 80
     }
     
-    let circleImageView: UIImageView = {
+    private let circleImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = UIConstants.imageSize / 2
@@ -29,33 +39,28 @@ class FavoriteCell: UITableViewCell {
         return imageView
     }()
     
-    let nameLabel: UILabel = {
+    private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "First Label"
         return label
     }()
     
-    let ageLabel: UILabel = {
+    private let ageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Second Label"
         return label
     }()
     
-    let scoreLabel: UILabel = {
+    private let scoreLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Third Label"
         return label
     }()
     
-    func configure(player: Player){
-        circleImageView.image = UIImage(systemName: "person.fill")
-        nameLabel.text = player.playerName
-        ageLabel.text = "Player age \(player.playerAge)"
-        scoreLabel.text = "Player score \(player.playerScore)"
-    }
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -103,3 +108,5 @@ class FavoriteCell: UITableViewCell {
     }
 
 }
+
+

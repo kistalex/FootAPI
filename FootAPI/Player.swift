@@ -16,19 +16,73 @@ import UIKit
 //
 //}
 
-struct Player: Codable {
-    var id: String
-    var playerImage: String?
-    var playerName: String?
-    var playerScore: String?
-    var playerAge: String?
+struct PlayerData: Codable, Equatable {
+    let response: [Response]
+    
+    static func == (lhs: PlayerData, rhs: PlayerData) -> Bool {
+        return lhs.response == rhs.response
+    }
+}
 
-    init(id: String = UUID().uuidString, data: [String: Any]) {
-        self.id = id
-        self.playerImage = data["photo"] as? String
-        self.playerName = "\(data["firstname"] as? String ?? "") \(data["lastname"] as? String ?? "")"
-        self.playerScore = ((data["statistics"] as? [String: Any])?["goals"] as? [String: Any])?["total"] as? String
-        self.playerAge = data["age"] as? String
+// MARK: - Response
+struct Response: Codable, Equatable {
+    let player: Player
+    let statistics: [Statistic]
+    
+    static func == (lhs: Response, rhs: Response) -> Bool {
+        return lhs.player == rhs.player && lhs.statistics == rhs.statistics
+    }
+}
+
+// MARK: - Player
+struct Player: Codable, Equatable {
+    let id: Int
+    let name, firstname, lastname: String
+    let age: Int
+    let birth: Birth
+    let nationality, height, weight: String
+    let injured: Bool
+    let photo: String
+    
+    static func == (lhs: Player, rhs: Player) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.name == rhs.name &&
+            lhs.firstname == rhs.firstname &&
+            lhs.lastname == rhs.lastname &&
+            lhs.age == rhs.age &&
+            lhs.birth == rhs.birth &&
+            lhs.nationality == rhs.nationality &&
+            lhs.height == rhs.height &&
+            lhs.weight == rhs.weight &&
+            lhs.injured == rhs.injured &&
+            lhs.photo == rhs.photo
+    }
+}
+
+// MARK: - Birth
+struct Birth: Codable, Equatable {
+    let date, place, country: String
+    
+    static func == (lhs: Birth, rhs: Birth) -> Bool {
+        return lhs.date == rhs.date && lhs.place == rhs.place && lhs.country == rhs.country
+    }
+}
+
+// MARK: - Statistic
+struct Statistic: Codable, Equatable {
+    let goals: Goals
+    
+    static func == (lhs: Statistic, rhs: Statistic) -> Bool {
+        return lhs.goals == rhs.goals
+    }
+}
+
+// MARK: - Goals
+struct Goals: Codable, Equatable {
+    let total: Int
+    
+    static func == (lhs: Goals, rhs: Goals) -> Bool {
+        return lhs.total == rhs.total
     }
 }
 

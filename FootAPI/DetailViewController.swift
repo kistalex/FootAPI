@@ -9,17 +9,23 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    var player: Player?
+     var topScorer: Response? {
+        didSet{
+            configureUI()
+        }
+    }
+    
+    func configureUI(){
+        guard let topScorer = topScorer else { return }
+        imageView.loadFrom(URLAddress: topScorer.player.photo)
+        nameLabel.text = "Name: \(topScorer.player.name)"
+        ageLabel.text = "Age: \(topScorer.player.age)"
+        scoreLabel.text = "Score: \(topScorer.statistics[0].goals.total)"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        if let player = player{
-//            imageView.image = player.playerImage
-            nameLabel.text = "Name: \(player.playerName)"
-            ageLabel.text = "Age: \(player.playerAge)"
-            scoreLabel.text = "Score: \(player.playerScore)"
-        }
         setupUI()
         
     }
@@ -34,20 +40,20 @@ class DetailViewController: UIViewController {
     
     
     
-    let nameLabel: UILabel = {
+    private let nameLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         return label
     }()
     
     
-    let ageLabel: UILabel = {
+    private let ageLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         return label
     }()
     
-    let scoreLabel: UILabel = {
+    private let scoreLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         return label
