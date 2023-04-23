@@ -9,9 +9,24 @@ import UIKit
 
 class PlayerCell: UITableViewCell {
     
-    var player: Player?
+    weak var delegate: PlayerCellDelegate?
     
     static let identifier = "Player Cell"
+    
+    var topScorer: Response?{
+        didSet{
+            configureCell()
+        }
+    }
+    
+    func configureCell(){
+        guard let topScorer = topScorer else { return }
+        circleImageView.loadFrom(URLAddress: topScorer.player.photo)
+        nameLabel.text = topScorer.player.name
+        ageLabel.text = "Player age \(topScorer.player.age)"
+        scoreLabel.text = "Player score \(topScorer.statistics[0].goals.total)"
+    }
+    
     
     private enum UIConstants{
         static let imageSize: CGFloat = 80
@@ -59,26 +74,16 @@ class PlayerCell: UITableViewCell {
     
     var isFavorite: Bool = false
     
-    @objc func starButtonTapped() {
-    
-            if isFavorite {
-//                if let index = favoritePlayers.firstIndex (where: { $0.id == playerData.id }) {
-//                    favoritePlayers.remove (at: index)
-//                    if let favoritePlayersData = try? JSONEncoder().encode(favoritePlayers){
-//                        defaults.set(favoritePlayers, forKey: "favoritePlayers")
-//                    }
-//                }
-                starButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
-                starButton.tintColor = .red
-            } else {
-                //if is  in favorite this button have red  color
-                starButton.setImage(UIImage(systemName: "star"), for: .normal)
-                starButton.tintColor = .black
-//                favoritePlayers.append(player)
-//                defaults.set(favoritePlayers, forKey: "favoritePlayers")
-            }
-            isFavorite.toggle()
-        
+    @objc func starButtonTapped(sender: UIButton) {
+        isFavorite.toggle()
+        if isFavorite {
+            starButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
+            starButton.tintColor = .red
+        } else {
+            starButton.setImage(UIImage(systemName: "star"), for: .normal)
+            starButton.tintColor = .black
+        }
+        delegate?.didTapFavoriteButton(for: self)
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -90,12 +95,7 @@ class PlayerCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(player: Player){
-        circleImageView.image = UIImage(systemName: "person.fill")
-        nameLabel.text = player.playerName
-        ageLabel.text = "Player age \(String(describing: player.playerAge))"
-        scoreLabel.text = "Player score \(String(describing: player.playerScore))"
-    }
+    
     
     private func setupUI(){
         //MARK: - Setup subViews
@@ -132,3 +132,5 @@ class PlayerCell: UITableViewCell {
         ])
     }
 }
+
+

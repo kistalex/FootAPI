@@ -8,8 +8,9 @@
 import UIKit
 
 class FavoritePlayersViewController: UIViewController {
+    weak var delegate: PlayerCellDelegate?
 
-    var favoritePlayers = UserDefaults.standard.array(forKey: "favoritePlayers") as? [Player] ?? []
+    var favoritePlayers: [Response] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +51,7 @@ extension FavoritePlayersViewController: UITableViewDataSource{
             fatalError("TableView couldn't dequeue a PlayerCell")
         }
         let player = favoritePlayers[indexPath.row]
-        cell.configure(player: player)
+        cell.favoritePlayer = player
         return cell
     }
     

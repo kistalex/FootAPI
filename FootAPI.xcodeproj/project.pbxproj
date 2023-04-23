@@ -21,6 +21,7 @@
 		463175FB29E85FE70038C412 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463175FA29E85FE70038C412 /* DetailViewController.swift */; };
 		46A229D429EB227A0078D6C4 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A229D329EB227A0078D6C4 /* FavoriteCell.swift */; };
 		46A229D629EDC5AC0078D6C4 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A229D529EDC5AC0078D6C4 /* APIManager.swift */; };
+		46A229D829F03B040078D6C4 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A229D729F03B040078D6C4 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		463175FA29E85FE70038C412 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		46A229D329EB227A0078D6C4 /* FavoriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCell.swift; sourceTree = "<group>"; };
 		46A229D529EDC5AC0078D6C4 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		46A229D729F03B040078D6C4 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				463175EE29E829070038C412 /* MainTabBarController.swift */,
 				463175F229E829630038C412 /* FavoritePlayersViewController.swift */,
 				463175F029E829420038C412 /* PlayersListViewController.swift */,
+				46A229D729F03B040078D6C4 /* Extensions.swift */,
 				46A229D329EB227A0078D6C4 /* FavoriteCell.swift */,
 				463175F429E82B8F0038C412 /* PlayerCell.swift */,
 				46A229D529EDC5AC0078D6C4 /* APIManager.swift */,
@@ -169,6 +172,7 @@
 				46A229D629EDC5AC0078D6C4 /* APIManager.swift in Sources */,
 				463175F529E82B8F0038C412 /* PlayerCell.swift in Sources */,
 				463175DB29E828A30038C412 /* AppDelegate.swift in Sources */,
+				46A229D829F03B040078D6C4 /* Extensions.swift in Sources */,
 				463175F929E8511E0038C412 /* Player.swift in Sources */,
 				463175EF29E829070038C412 /* MainTabBarController.swift in Sources */,
 				463175DD29E828A30038C412 /* SceneDelegate.swift in Sources */,
